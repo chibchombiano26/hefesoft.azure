@@ -8,7 +8,6 @@ angular.module('starter')
     var androidConfig = {
         "senderID": "505952414500",
     };
- 
 
 
     $rootScope.$on('$cordovaPush:notificationReceived', function(event, notification) {
@@ -70,8 +69,8 @@ angular.module('starter')
 
     //Un tag o un nombre
     dataFactory.enviarMensaje = function(enviarA, mensaje){
-
-    	var item = { platform : "gcm", to_tag : enviarA, mensaje : mensaje};
+      var platformVersion = getPlatform();
+    	var item = { platform : platformVersion, to_tag : enviarA, mensaje : mensaje};
     	$http.post(urlBase + "api/notifications", item)
     	.success(function (data) {                
         	console.log(data);        
@@ -110,11 +109,23 @@ angular.module('starter')
             });
 	}
 
+  dataFactory.getPlatform = function(){
+      return getPlatform();    
+  }
+
 
 
 	function getPlatform(){
     	var deviceInformation = ionic.Platform.device();
-        var isAndroid = ionic.Platform.isAndroid();
+      var isAndroid = ionic.Platform.isAndroid();
+      var isWebView = ionic.Platform.isWebView();
+      var isIPad = ionic.Platform.isIPad();
+      var isIOS = ionic.Platform.isIOS();
+      var isAndroid = ionic.Platform.isAndroid();
+      var isWindowsPhone = ionic.Platform.isWindowsPhone();
+
+      var currentPlatform = ionic.Platform.platform();
+      var currentPlatformVersion = ionic.Platform.version();
 
       if(isAndroid){
   			return  "gcm";
